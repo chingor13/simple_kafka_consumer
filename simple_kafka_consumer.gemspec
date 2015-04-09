@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SimpleKafkaConsumer::VERSION
   spec.authors       = ["Jeff Ching"]
   spec.email         = ["jching@avvo.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Write Kafka consumers in a model with retry}
+  spec.description   = %q{Write Kafka consumers in a model with retry}
   spec.homepage      = ""
   spec.license       = "MIT"
 

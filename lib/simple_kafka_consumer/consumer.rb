@@ -1,8 +1,3 @@
-require 'poseidon'
-require 'poseidon_cluster'
-require 'logger'
-require 'active_support/core_ext/class/attribute'
-
 module SimpleKafkaConsumer
   class Consumer    
     class_attribute :group_name, :topic_name
