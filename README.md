@@ -1,6 +1,6 @@
 # SimpleKafkaConsumer
 
-TODO: Write a gem description
+Write Kafka consumers in a model with retry
 
 ## Installation
 
@@ -20,7 +20,38 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You will want to write your own consumer class that inherits from `SimpleKafkaConsumer::Consumer`. You will want to specify the `group_name` and `topic_name`. You'll also want to define the `consume` method which is the handler for batch of messages received.
+
+```
+class MyConsumer < SimpleKafkaConsumer::Consumer
+  # the name used for coordinating multiple consumers
+  self.group_name = "my-group-name"
+
+  # the kafka topic we're reading from
+  self.topic_name = "my-topic-name"
+
+  # handle the messages
+  def consume(partition, bulk)
+    bulk.each do |message|
+      puts message
+    end
+  end
+end
+```
+
+To create a consumer instance, you'll need to provide an array of kafka servers and an array of zookeeper servers. You can optionally provide a logger as well.
+
+```
+# create a consumer
+kafka_servers = ["localhost:9092"]
+zookeeper_servers = ["localhost:2181"]
+consumer = MyConsumer.new(kafka_servers, zookeeper_servers, logger: nil)
+
+# run the consumer (loops and blocks)
+consumer.run
+```
+
+This gem utilizes the `poseidon_cluster` gem and consumers coordinate via zookeeper. Thus, you can run many consumers. The `group_name` is what's used to determine which messages have already been processed.
 
 ## Contributing
 
