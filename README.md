@@ -31,13 +31,30 @@ class MyConsumer < SimpleKafkaConsumer::Consumer
   self.topic_name = "my-topic-name"
 
   # handle the messages
-  def consume(partition, bulk)
-    bulk.each do |message|
-      puts message
-    end
+  def consume(message)
+    puts message
   end
 end
 ```
+
+### Formatting
+
+You can have the consumer handle deserializing your data that is sent in the message. For example, if you used json as your message format:
+
+```ruby
+class MyConsumer
+  def parse(message)
+    JSON.parse(message)
+  end
+
+  # the message you're consuming is now a parsed json object
+  def consume(json_object)
+    puts json_object['name']
+  end
+end
+```
+
+### Creating and Running
 
 To create a consumer instance, you'll need to provide an array of kafka servers and an array of zookeeper servers. You can optionally provide a logger as well.
 
