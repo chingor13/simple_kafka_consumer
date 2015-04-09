@@ -22,7 +22,7 @@ Or install it yourself as:
 
 You will want to write your own consumer class that inherits from `SimpleKafkaConsumer::Consumer`. You will want to specify the `group_name` and `topic_name`. You'll also want to define the `consume` method which is the handler for batch of messages received.
 
-```
+```ruby
 class MyConsumer < SimpleKafkaConsumer::Consumer
   # the name used for coordinating multiple consumers
   self.group_name = "my-group-name"
@@ -41,7 +41,7 @@ end
 
 To create a consumer instance, you'll need to provide an array of kafka servers and an array of zookeeper servers. You can optionally provide a logger as well.
 
-```
+```ruby
 # create a consumer
 kafka_servers = ["localhost:9092"]
 zookeeper_servers = ["localhost:2181"]
