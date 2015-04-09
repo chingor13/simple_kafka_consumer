@@ -15,13 +15,21 @@ module SimpleKafkaConsumer
     def run
       debug "partitions: #{consumer.partitions}"
       debug "claimed: #{consumer.claimed}"
-      consumer.fetch_loop(&method(:consume))
+      consumer.fetch_loop do |partition, bulk|
+        bulk.each do |message|
+          consume(parse(message))
+        end
+      end
     rescue ZK::Exceptions::OperationTimeOut => e
       log e.message
       retry
     end
 
     protected
+
+    def parse(message)
+      message
+    end
 
     def log(message)
       return false unless logger
@@ -33,7 +41,7 @@ module SimpleKafkaConsumer
       logger.debug message
     end
 
-    def consume(partition, bulk)
+    def consume(message)
       puts "doing nothing"
     end
   end
