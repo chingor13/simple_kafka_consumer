@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activesupport", ">= 3.2.0"
-  spec.add_dependency "poseidon", "0.0.4"
-  spec.add_dependency "poseidon_cluster", "0.1.1"
+  spec.add_dependency "poseidon"
+  spec.add_dependency "poseidon_cluster"
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
