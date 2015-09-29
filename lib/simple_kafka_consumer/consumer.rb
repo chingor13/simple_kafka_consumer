@@ -2,14 +2,15 @@ module SimpleKafkaConsumer
   class Consumer    
     class_attribute :group_name, :topic_name
     attr_reader :consumer, :logger
-    def initialize(kafka_servers, zookeeper_servers, logger: nil)
+    def initialize(kafka_servers, zookeeper_servers, options = {})
+      @logger = options.delete(:logger)
       @consumer = Poseidon::ConsumerGroup.new(
         group_name, 
         kafka_servers, 
         zookeeper_servers, 
-        topic_name
+        topic_name,
+        options
       )
-      @logger = logger
     end
 
     def run
