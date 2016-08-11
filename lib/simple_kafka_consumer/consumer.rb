@@ -34,12 +34,12 @@ module SimpleKafkaConsumer
 
     def log(message)
       return false unless logger
-      logger.info message
+      logger.tagged(self.class) { logger.error message }
     end
 
     def debug(message)
       return false unless logger
-      logger.debug message
+      logger.tagged(self.class) { logger.debug message }
     end
 
     def consume(message)
