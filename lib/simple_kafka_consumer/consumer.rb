@@ -18,7 +18,7 @@ module SimpleKafkaConsumer
       debug "claimed: #{consumer.claimed}"
       consumer.fetch_loop do |partition, bulk|
         bulk.each do |message|
-          consume(parse(message))
+          process(parse(message))
         end
       end
     rescue ZK::Exceptions::OperationTimeOut => e
@@ -44,6 +44,15 @@ module SimpleKafkaConsumer
 
     def consume(message)
       puts "doing nothing"
+    end
+
+    def process(message)
+      meter(message)
+      consume(message)
+    end
+
+    def meter(message)
+      # Add optional meter
     end
   end
 end
