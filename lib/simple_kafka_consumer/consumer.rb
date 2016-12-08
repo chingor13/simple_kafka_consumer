@@ -1,6 +1,6 @@
 module SimpleKafkaConsumer
   class Consumer    
-    class_attribute :group_name, :topic_name, :terminated, :timeout
+    class_attribute :group_name, :topic_name
 
     attr_reader :consumer, :logger
     def initialize(kafka_servers, zookeeper_servers, options = {})
@@ -13,8 +13,8 @@ module SimpleKafkaConsumer
         options
       )
       Signal.trap("INT") do
-        self.class.terminated = true
-        self.class.timeout = 5
+        @terminated = true
+        @timeout = 5
       end
     end
 
@@ -22,12 +22,12 @@ module SimpleKafkaConsumer
       debug "partitions: #{consumer.partitions}"
       debug "claimed: #{consumer.claimed}"
       consumer.fetch_loop do |partition, bulk|
-        Timeout::timeout(timeout) do
+        Timeout.timeout(@timeout) do
           bulk.each do |message|
             consume(parse(message))
           end
         end
-        break if terminated
+        break if @terminated
       end
     rescue ZK::Exceptions::OperationTimeOut => e
       log e.message
