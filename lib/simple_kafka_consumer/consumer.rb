@@ -47,12 +47,13 @@ module SimpleKafkaConsumer
     end
 
     def process(message)
-      meter(message)
-      consume(message)
+      meter(message) do
+        consume(message)
+      end
     end
 
-    def meter(message)
-      # Add optional meter
+    def meter(message) do
+      yield
     end
   end
 end
