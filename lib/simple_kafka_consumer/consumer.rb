@@ -24,7 +24,7 @@ module SimpleKafkaConsumer
       consumer.fetch_loop do |partition, bulk|
         Timeout.timeout(@timeout) do
           bulk.each do |message|
-            consume(parse(message))
+            process(parse(message))
           end
         end
         break if @terminated
@@ -52,6 +52,16 @@ module SimpleKafkaConsumer
 
     def consume(message)
       puts "doing nothing"
+    end
+
+    def process(message)
+      instrumenter(message) do
+        consume(message)
+      end
+    end
+
+    def instrumenter(message)
+      yield
     end
   end
 end
