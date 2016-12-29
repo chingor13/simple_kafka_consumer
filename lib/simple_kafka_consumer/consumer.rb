@@ -1,20 +1,23 @@
 module SimpleKafkaConsumer
-  class Consumer    
+  class Consumer
     class_attribute :group_name, :topic_name
 
     attr_reader :consumer, :logger
     def initialize(kafka_servers, zookeeper_servers, options = {})
       @logger = options.delete(:logger)
+      timeout_length = options.delete(:timeout) || 5
       @consumer = Poseidon::ConsumerGroup.new(
-        group_name, 
-        kafka_servers, 
-        zookeeper_servers, 
+        group_name,
+        kafka_servers,
+        zookeeper_servers,
         topic_name,
         options
       )
-      Signal.trap("INT") do
-        @terminated = true
-        @timeout = 5
+      %w(INT TERM).each do |signal|
+        Signal.trap(signal) do
+          @terminated = true
+          @timeout = timeout_length
+        end
       end
     end
 
