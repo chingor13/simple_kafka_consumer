@@ -52,7 +52,7 @@ module SimpleKafkaConsumer
       end
     end
 
-    def instrumenter(message) do
+    def instrumenter(message)
       yield
     end
   end
